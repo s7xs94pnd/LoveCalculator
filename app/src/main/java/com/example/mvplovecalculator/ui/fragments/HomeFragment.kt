@@ -1,21 +1,20 @@
 package com.example.mvplovecalculator.ui.fragments
-
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.mvplovecalculator.data.model.CalculatedResult
 import com.example.mvplovecalculator.data.repository.LoveCalculatorRepository
 import com.example.mvplovecalculator.databinding.FragmentHomeBinding
-import com.example.mvplovecalculator.presenter.HomePresenter
-import com.example.mvplovecalculator.ui.view.HomeView
+import com.example.mvplovecalculator.ui.viewModel.HomeViewModel
+import com.example.mvplovecalculator.ui.viewModel.HomeViewModelFactory
 
-class HomeFragment : Fragment(), HomeView {
+class HomeFragment : Fragment() {
 
-    private lateinit var presenter: HomePresenter
+    private lateinit var viewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -23,46 +22,44 @@ class HomeFragment : Fragment(), HomeView {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val repository = LoveCalculatorRepository()
-        presenter = HomePresenter(this, repository)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        val factory = HomeViewModelFactory(LoveCalculatorRepository())
+        viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpObservers()
         setUpOnClickListeners()
     }
 
     private fun setUpOnClickListeners() = with(binding) {
         btnCalculate.setOnClickListener {
-            presenter.onCalculateClicked(etFirstName.text.toString(), etSecondName.text.toString())
+            viewModel.calculateLovePercentage(
+                etFirstName.text.toString(),
+                etSecondName.text.toString()
+            )
         }
     }
 
-    override fun showLoading() {
-        binding.progressBar.visibility = View.VISIBLE
-    }
+    private fun setUpObservers() {
+        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
 
-    override fun hideLoading() {
-        binding.progressBar.visibility = View.GONE
-    }
+        viewModel.result.observe(viewLifecycleOwner) { result ->
+            val action = HomeFragmentDirections.actionHomeFragmentToResultFragment(result)
+            findNavController().navigate(action)
+            binding.etFirstName.text.clear()
+            binding.etSecondName.text.clear()
+        }
 
-    override fun showResult(result: CalculatedResult) {
-        val action = HomeFragmentDirections.actionHomeFragmentToResultFragment(result)
-        findNavController().navigate(action)
-        binding.etFirstName.text.clear()
-        binding.etSecondName.text.clear()
-    }
-
-    override fun showValidationErrors() {
-        binding.etFirstName.error = "Введите данные"
-        binding.etSecondName.error = "Введите данные"
-    }
-
-    override fun showError(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroyView() {
