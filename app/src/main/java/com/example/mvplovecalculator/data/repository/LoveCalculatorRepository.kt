@@ -2,15 +2,18 @@ package com.example.mvplovecalculator.data.repository
 
 import com.example.mvplovecalculator.BuildConfig
 import com.example.mvplovecalculator.data.model.CalculatedResult
-import com.example.mvplovecalculator.data.network.RetrofitInstance
+import com.example.mvplovecalculator.data.network.ApiService
+import javax.inject.Inject
 
-class LoveCalculatorRepository {
+class LoveCalculatorRepository @Inject constructor(
+    private val apiService: ApiService
+) {
     fun calculateLovePercentage(
         firstName: String,
         secondName: String,
         callback: retrofit2.Callback<CalculatedResult>
     ) {
-        RetrofitInstance.api.getPercentage(
+        apiService.getPercentage(
             firstName = firstName,
             secondName = secondName,
             key = BuildConfig.KEY,

@@ -10,8 +10,8 @@ data class CalculatedResult(
     val firstName: String,
     @SerializedName("sname")
     val secondName: String,
-    @SerializedName ("percentage")
+    @SerializedName("percentage")
     val percentage: String,
     @SerializedName("result")
-    val result : String
+    val result: String
 ) : Parcelable

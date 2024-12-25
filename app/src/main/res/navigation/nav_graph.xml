@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
     </fragment>
     <fragment
         android:id="@+id/resultFragment"
@@ -23,4 +26,9 @@
             android:name="resultModel"
             app:argType="com.example.mvplovecalculator.data.model.CalculatedResult" />
     </fragment>
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.example.mvplovecalculator.ui.fragments.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" />
 </navigation>

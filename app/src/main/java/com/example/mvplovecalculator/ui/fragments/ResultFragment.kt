@@ -7,9 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.mvplovecalculator.data.model.CalculatedResult
-import com.example.mvplovecalculator.databinding.FragmentHomeBinding
 import com.example.mvplovecalculator.databinding.FragmentResultBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ResultFragment : Fragment() {
 
     private lateinit var calculatedResult: CalculatedResult

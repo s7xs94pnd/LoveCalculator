@@ -5,6 +5,14 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     //Parcelize
     id("kotlin-parcelize")
+
+    //dagger-hilt
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+
+    //Room
+    //ksp
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -59,6 +67,15 @@ dependencies {
 //lottie
     val lottieVersion = "3.4.0"
     implementation("com.airbnb.android:lottie:$lottieVersion")
+    //Dagger - Hilt
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+
+    //Room
+    val room_version = "2.6.1"
+    ksp("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
