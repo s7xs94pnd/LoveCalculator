@@ -1,6 +1,8 @@
 package com.example.mvplovecalculator.di
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.example.mvplovecalculator.BuildConfig
 import com.example.mvplovecalculator.data.database.AppDatabase
@@ -65,6 +67,24 @@ class AppModule:Application(){
         @Singleton
         fun provideCalculatedResultDao(database: AppDatabase): LoveResultDao {
             return database.calculatedResultDao()
+        }
+    }
+
+
+    @Module
+    @InstallIn(SingletonComponent::class)
+    object SharedPreferencesModule {
+
+        @Provides
+        @Singleton
+        fun provideSharedPreferences(app: Application): SharedPreferences {
+            return app.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        }
+
+        @Provides
+        @Singleton
+        fun provideSharedPreferencesEditor(sharedPreferences: SharedPreferences): SharedPreferences.Editor {
+            return sharedPreferences.edit()
         }
     }
 }

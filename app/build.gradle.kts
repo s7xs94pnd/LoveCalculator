@@ -75,7 +75,8 @@ dependencies {
     val room_version = "2.6.1"
     ksp("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
-
+    //Dots tab layout
+    implementation("com.tbuonomo:dotsindicator:5.1.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

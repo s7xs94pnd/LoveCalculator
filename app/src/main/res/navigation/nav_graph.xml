@@ -2,8 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/homeFragment">
+    android:id="@+id/nav_graph.xml">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -31,4 +30,12 @@
         android:name="com.example.mvplovecalculator.ui.fragments.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
+    <fragment
+        android:id="@+id/onBoardFragment"
+        android:name="com.example.mvplovecalculator.ui.fragments.onboard.OnBoardFragment"
+        android:label="OnBoardFragment" >
+        <action
+            android:id="@+id/action_onBoardFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>

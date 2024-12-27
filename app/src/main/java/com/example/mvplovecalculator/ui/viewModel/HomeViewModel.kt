@@ -34,7 +34,6 @@ class HomeViewModel @Inject constructor(
     private val _history = MutableLiveData<List<LoveResultEntity>>()
     val history: LiveData<List<LoveResultEntity>> get() = _history
 
-    // Метод для вычисления процента любви
     fun calculateLovePercentage(firstName: String, secondName: String) {
         if (firstName.isEmpty() || secondName.isEmpty()) {
             _error.value = "Введите оба имени"
@@ -84,5 +83,8 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _history.value = dao.getAllResults()
         }
+    }
+    fun sortHistoryByPercentage() {
+        _history.value = _history.value?.sortedBy { it.percentage }
     }
 }
